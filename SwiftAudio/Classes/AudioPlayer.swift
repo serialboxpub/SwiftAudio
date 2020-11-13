@@ -11,7 +11,7 @@ import MediaPlayer
 public typealias AudioPlayerState = AVPlayerWrapperState
 
 public class AudioPlayer: AVPlayerWrapperDelegate {
-    
+
     private var _wrapper: AVPlayerWrapperProtocol
     
     /// The wrapper around the underlying AVPlayer
@@ -205,11 +205,11 @@ public class AudioPlayer: AVPlayerWrapperDelegate {
     /**
      Seek to a specific time in the item.
      */
-    public func seek(to seconds: TimeInterval) {
+    public func seek(to seconds: TimeInterval, andResumePlayback resumePlayback: Bool = true) {
         if automaticallyUpdateNowPlayingInfo {
             self.updateNowPlayingCurrentTime(seconds)
         }
-        self.wrapper.seek(to: seconds)
+        self.wrapper.seek(to: seconds, andResumePlayback: resumePlayback)
     }
     
     // MARK: - Remote Command Center

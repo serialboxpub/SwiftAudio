@@ -156,11 +156,11 @@ class AVPlayerWrapper: AVPlayerWrapperProtocol {
         reset(soft: false)
     }
     
-    func seek(to seconds: TimeInterval) {
+    func seek(to seconds: TimeInterval, andResumePlayback resumePlayback: Bool = true) {
         avPlayer.seek(to: CMTimeMakeWithSeconds(seconds, preferredTimescale: 1000)) { (finished) in
             if let _ = self._initialTime {
                 self._initialTime = nil
-                if self._playWhenReady {
+                if self._playWhenReady && resumePlayback {
                     self.play()
                 }
             }
