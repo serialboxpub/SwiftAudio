@@ -62,6 +62,7 @@
 		5F975077CC1B176BEBB879B3ABE9AEA3 /* NowPlayingInfoProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2490DAAE58593E55570AE72C6420035E /* NowPlayingInfoProperty.swift */; };
 		64199AAB3CA87FC3C41B45608B4D1BC6 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299F2A2E2BC96FFA1F65CF4B14BD88C2 /* Event.swift */; };
 		6481A26D81381BF61BFD499C2A4374E8 /* BeLessThan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F61CAE0C086C5721BB2D7D386D76334 /* BeLessThan.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
+		69ABCC5C2616EA4B00851E28 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69ABCC5B2616EA4B00851E28 /* ConnectionManager.swift */; };
 		6CF465F2F1819C35F40E74B5002AEC4D /* QuickConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = D982FFA4D91510591D52452377AF2C5C /* QuickConfiguration.m */; };
 		718487CFFA2EBA0546AA6F162F5ED007 /* QuickSpec.h in Headers */ = {isa = PBXBuildFile; fileRef = DC5D891A308A918C8A598E96CF7468EF /* QuickSpec.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		72B4811FE7AC53D9BCE4B0713EFECA87 /* HaveCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FB239F04438BF0185BAC6CE10F1F15 /* HaveCount.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
@@ -257,6 +258,7 @@
 		65DB80A2EEDE6B9579334168763DF7CE /* BeLessThanOrEqual.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeLessThanOrEqual.swift; path = Sources/Nimble/Matchers/BeLessThanOrEqual.swift; sourceTree = "<group>"; };
 		66323C82A0A7CB5FB54B5F774BEC72DC /* Quick.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Quick.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		693059C09C27E54F053A4434B6A21E6C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		69ABCC5B2616EA4B00851E28 /* ConnectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConnectionManager.swift; path = SwiftAudio/Classes/ConnectionManager.swift; sourceTree = "<group>"; };
 		6DEE0ABD257E7A562F3A8FAFE03E9FBC /* Pods-SwiftAudio_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SwiftAudio_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		747BC4EDBF186DED5F6ECE69B29801A9 /* Nimble.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Nimble.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		77E7E2CFB94609AE3465108A27AA0623 /* SuiteHooks.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SuiteHooks.swift; path = Sources/Quick/Hooks/SuiteHooks.swift; sourceTree = "<group>"; };
@@ -483,6 +485,7 @@
 		5C59A33B6DEC867BE7F26A598F62CD46 /* SwiftAudio */ = {
 			isa = PBXGroup;
 			children = (
+				69ABCC5B2616EA4B00851E28 /* ConnectionManager.swift */,
 				81D8E6290CB6FBCB6BCAB085CDE97AEB /* APError.swift */,
 				C7E064B4DB4312770DD4F9D989DDCEFE /* AudioItem.swift */,
 				962E49248317E42062ED6D10A6AE3C72 /* AudioPlayer.swift */,
@@ -990,6 +993,7 @@
 				88539FC6E7E2F4E9EE91E034CADA5F51 /* AudioItem.swift in Sources */,
 				CDD3F30A9328CF4558820E1342B6AFE6 /* AudioPlayer.swift in Sources */,
 				04E3DCDE2B07B4F9BB4B3A3C30441B07 /* AudioSession.swift in Sources */,
+				69ABCC5C2616EA4B00851E28 /* ConnectionManager.swift in Sources */,
 				AA2B2126BA7C1C915704F27A6695A597 /* AudioSessionController.swift in Sources */,
 				138FBF8D997CAE0748285D6A6E73FE85 /* AVPlayerItemNotificationObserver.swift in Sources */,
 				BBB44060EF8187AF09C4F7B5E674175E /* AVPlayerItemObserver.swift in Sources */,

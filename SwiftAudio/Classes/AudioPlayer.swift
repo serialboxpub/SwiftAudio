@@ -206,10 +206,15 @@ public class AudioPlayer: AVPlayerWrapperDelegate {
      Seek to a specific time in the item.
      */
     public func seek(to seconds: TimeInterval, andResumePlayback resumePlayback: Bool = true) {
-        if automaticallyUpdateNowPlayingInfo {
-            self.updateNowPlayingCurrentTime(seconds)
+        var timeToSeek = seconds
+        if !ConnectionManager.isConnectedToNetwork() && seconds >= bufferedPosition {
+            timeToSeek = bufferedPosition
         }
-        self.wrapper.seek(to: seconds, andResumePlayback: resumePlayback)
+
+        if automaticallyUpdateNowPlayingInfo {
+            self.updateNowPlayingCurrentTime(timeToSeek)
+        }
+        self.wrapper.seek(to: timeToSeek, andResumePlayback: resumePlayback)
     }
     
     // MARK: - Remote Command Center
@@ -321,6 +326,9 @@ public class AudioPlayer: AVPlayerWrapperDelegate {
     }
     
     func AVWrapper(secondsElapsed seconds: Double) {
+        if !ConnectionManager.isConnectedToNetwork() && seconds >= bufferedPosition {
+            pause()
+        }
         self.event.secondElapse.emit(data: seconds)
     }
     

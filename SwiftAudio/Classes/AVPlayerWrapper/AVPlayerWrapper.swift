@@ -160,11 +160,14 @@ class AVPlayerWrapper: AVPlayerWrapperProtocol {
         avPlayer.seek(to: CMTimeMakeWithSeconds(seconds, preferredTimescale: 1000)) { (finished) in
             if let _ = self._initialTime {
                 self._initialTime = nil
-                if self._playWhenReady && resumePlayback {
+                if self._playWhenReady && resumePlayback && !(!ConnectionManager.isConnectedToNetwork() && seconds >= self.bufferedPosition) {
                     self.play()
                 }
             }
             self.delegate?.AVWrapper(seekTo: Int(seconds), didFinish: finished)
+            if !ConnectionManager.isConnectedToNetwork() && seconds >= self.bufferedPosition {
+                self.pause()
+            }
         }
     }
     
