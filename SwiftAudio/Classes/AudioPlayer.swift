@@ -117,8 +117,17 @@ public class AudioPlayer: AVPlayerWrapperDelegate {
 
     public var rate: Float {
         get { return wrapper.rate }
-        set { _wrapper.rate = newValue }
+        set {
+            _wrapper.rate = newValue
+            actualRate = newValue
+        }
     }
+
+    /**
+     Due to AVPlayer.rate being reset and not consistant for whatever good reason Apple thought about.
+     We will actually save an actualRate that would be used whenever we need it.
+     */
+    private var actualRate: Float = 1.0
     
     // MARK: - Init
     
@@ -145,7 +154,11 @@ public class AudioPlayer: AVPlayerWrapperDelegate {
      - parameter item: The AudioItem to load. The info given in this item is the one used for the InfoCenter.
      - parameter playWhenReady: Immediately start playback when the item is ready. Default is `true`. If you disable this you have to call play() or togglePlay() when the `state` switches to `ready`.
      */
-    public func load(item: AudioItem, playWhenReady: Bool = true) throws {
+    public func load(item: AudioItem, playWhenReady: Bool = true, withRate newRate: Float? = nil) throws {
+        if let newRate = newRate {
+            self.rate = newRate
+        }
+
         let url: URL
         switch item.getSourceType() {
         case .stream:
@@ -158,14 +171,14 @@ public class AudioPlayer: AVPlayerWrapperDelegate {
         case .file:
             url = URL(fileURLWithPath: item.getSourceUrl())
         }
-        
+
         wrapper.load(from: url,
                      playWhenReady: playWhenReady,
                      initialTime: (item as? InitialTiming)?.getInitialTime(),
                      options:(item as? AssetOptionsProviding)?.getAssetOptions())
-        
+
         self._currentItem = item
-        
+
         if (automaticallyUpdateNowPlayingInfo) {
             self.loadNowPlayingMetaValues()
         }
@@ -205,7 +218,7 @@ public class AudioPlayer: AVPlayerWrapperDelegate {
     /**
      Seek to a specific time in the item.
      */
-    public func seek(to seconds: TimeInterval, andResumePlayback resumePlayback: Bool = true) {
+    public func seek(to seconds: TimeInterval, resumePlayback: Bool = true, andRate newRate: Float? = nil) {
         var timeToSeek = seconds
         if !ConnectionManager.isConnectedToNetwork() && seconds >= bufferedPosition {
             timeToSeek = bufferedPosition
@@ -214,7 +227,8 @@ public class AudioPlayer: AVPlayerWrapperDelegate {
         if automaticallyUpdateNowPlayingInfo {
             self.updateNowPlayingCurrentTime(timeToSeek)
         }
-        self.wrapper.seek(to: timeToSeek, andResumePlayback: resumePlayback)
+
+        self.wrapper.seek(to: timeToSeek, resumePlayback: resumePlayback, andRate: newRate ?? actualRate)
     }
     
     // MARK: - Remote Command Center
@@ -266,7 +280,7 @@ public class AudioPlayer: AVPlayerWrapperDelegate {
     public func updateNowPlayingPlaybackValues() {
         updateNowPlayingDuration(duration)
         updateNowPlayingCurrentTime(currentTime)
-        updateNowPlayingRate(rate)
+        updateNowPlayingRate(actualRate)
     }
     
     private func updateNowPlayingDuration(_ duration: Double) {
@@ -329,6 +343,7 @@ public class AudioPlayer: AVPlayerWrapperDelegate {
         if !ConnectionManager.isConnectedToNetwork() && seconds >= bufferedPosition {
             pause()
         }
+        updateNowPlayingCurrentTime(currentTime)
         self.event.secondElapse.emit(data: seconds)
     }
     

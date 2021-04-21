@@ -47,7 +47,7 @@ protocol AVPlayerWrapperProtocol: class {
     
     func stop()
     
-    func seek(to seconds: TimeInterval, andResumePlayback: Bool)
+    func seek(to seconds: TimeInterval, resumePlayback: Bool, andRate newRate: Float)
     
     func load(from url: URL, playWhenReady: Bool, options: [String: Any]?)
     

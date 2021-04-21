@@ -137,7 +137,7 @@ class AVPlayerWrapperTests: XCTestCase {
         let seekTime: TimeInterval = 5.0
         let expectation = XCTestExpectation()
         holder.stateUpdate = { state in
-            self.wrapper.seek(to: seekTime)
+            self.wrapper.seek(to: seekTime, andRate: 1.0)
         }
         holder.didSeekTo = { seconds in
             expectation.fulfill()

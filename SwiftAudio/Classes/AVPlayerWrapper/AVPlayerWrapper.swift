@@ -156,8 +156,9 @@ class AVPlayerWrapper: AVPlayerWrapperProtocol {
         reset(soft: false)
     }
     
-    func seek(to seconds: TimeInterval, andResumePlayback resumePlayback: Bool = true) {
-        avPlayer.seek(to: CMTimeMakeWithSeconds(seconds, preferredTimescale: 1000)) { (finished) in
+    func seek(to seconds: TimeInterval, resumePlayback: Bool = true, andRate newRate: Float) {
+        avPlayer.seek(to: CMTimeMakeWithSeconds(seconds, preferredTimescale: 1000)) { [weak self] (finished) in
+            guard let self = self else { return }
             if let _ = self._initialTime {
                 self._initialTime = nil
                 if self._playWhenReady && resumePlayback && !(!ConnectionManager.isConnectedToNetwork() && seconds >= self.bufferedPosition) {
@@ -168,10 +169,9 @@ class AVPlayerWrapper: AVPlayerWrapperProtocol {
             if !ConnectionManager.isConnectedToNetwork() && seconds >= self.bufferedPosition {
                 self.pause()
             }
+            self.rate = newRate
         }
     }
-    
-    
     
     func load(from url: URL, playWhenReady: Bool, options: [String: Any]? = nil) {
         reset(soft: true)
@@ -292,7 +292,7 @@ extension AVPlayerWrapper: AVPlayerObserverDelegate {
                 self.play()
             }
             else if let initialTime = _initialTime {
-                self.seek(to: initialTime)
+                self.seek(to: initialTime, andRate: rate)
             }
             break
             
