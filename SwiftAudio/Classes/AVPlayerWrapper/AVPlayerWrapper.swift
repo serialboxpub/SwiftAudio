@@ -231,8 +231,11 @@ class AVPlayerWrapper: AVPlayerWrapperProtocol {
     
     func load(from url: URL, playWhenReady: Bool, initialTime: TimeInterval? = nil, options: [String : Any]? = nil) {
         _initialTime = initialTime
-        self.pause()
+        self.stop()
         self.load(from: url, playWhenReady: playWhenReady, options: options)
+        if playWhenReady {
+            play()
+        }
     }
     
     // MARK: - Util
@@ -288,25 +291,23 @@ extension AVPlayerWrapper: AVPlayerObserverDelegate {
         switch status {
         case .readyToPlay:
             self._state = .ready
-            if _playWhenReady && (_initialTime ?? 0) == 0 {
+            if let initialTime = _initialTime {
+                self.seek(to: initialTime, resumePlayback: _playWhenReady, andRate: rate)
+            }
+            else if _playWhenReady {
                 self.play()
             }
-            else if let initialTime = _initialTime {
-                self.seek(to: initialTime, andRate: rate)
-            }
             break
-            
         case .failed:
             self.delegate?.AVWrapper(failedWithError: avPlayer.error)
             break
-            
+
         case .unknown:
             break
         @unknown default:
             break
         }
     }
-    
 }
 
 extension AVPlayerWrapper: AVPlayerTimeObserverDelegate {
